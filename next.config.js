@@ -17,11 +17,16 @@ const nextConfig = {
   // Standalone output - быстрее и стабильнее
   output: 'standalone',
   
-  // Отключаем оптимизацию изображений во время сборки (ускоряет сборку)
+  // Отключаем оптимизацию шрифтов (может вызывать зависания)
+  optimizeFonts: false,
+  
+  // Упрощаем оптимизацию изображений
   images: {
     domains: ['tile.openstreetmap.org'],
     unoptimized: false,
+    minimumCacheTTL: 60,
   },
+  
 
 
   webpack: (config, { isServer }) => {
