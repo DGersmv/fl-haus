@@ -5,6 +5,14 @@ const nextConfig = {
   reactStrictMode: false,
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+  
+  // Оптимизации для ускорения сборки
+  swcMinify: true,
+  compress: true,
+  poweredByHeader: false,
+  
+  // Отключаем генерацию source maps в production для ускорения
+  productionBrowserSourceMaps: false,
 
   images: {
     domains: ['tile.openstreetmap.org'],
