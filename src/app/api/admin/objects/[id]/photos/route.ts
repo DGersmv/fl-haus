@@ -6,6 +6,10 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import { generateThumbnail } from '@/lib/imageProcessing';
 
+// Увеличиваем лимит размера тела запроса до 100MB
+export const maxDuration = 300; // 5 минут для больших файлов
+export const runtime = 'nodejs';
+
 const resolveFilePath = (explicitPath: string | null | undefined, fallbackPath: string) => {
   if (typeof explicitPath === 'string' && explicitPath.trim().length > 0) {
     return explicitPath;
@@ -85,9 +89,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       return NextResponse.json({ success: false, message: "Неподдерживаемый тип файла" }, { status: 400 });
     }
 
-    // Проверяем размер файла (максимум 50MB)
-    if (file.size > 50 * 1024 * 1024) {
-      return NextResponse.json({ success: false, message: "Файл слишком большой (максимум 50MB)" }, { status: 400 });
+    // Проверяем размер файла (максимум 100MB)
+    if (file.size > 100 * 1024 * 1024) {
+      return NextResponse.json({ success: false, message: "Файл слишком большой (максимум 100MB)" }, { status: 400 });
     }
 
     // Создаем уникальное имя файла

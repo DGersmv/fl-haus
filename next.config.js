@@ -37,6 +37,13 @@ const nextConfig = {
       },
     ];
   },
+
+  // Увеличиваем лимит размера тела запроса для загрузки файлов
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '100mb',
+    },
+  },
 };
 
 module.exports = nextConfig;

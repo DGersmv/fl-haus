@@ -9,7 +9,11 @@ import { generateThumbnail } from '@/lib/imageProcessing';
 import { classifyPanoramaProjection } from '@/lib/panoramaUtils';
 import { Prisma } from '@prisma/client';
 
-const MAX_FILE_SIZE_MB = 50;
+// Увеличиваем лимит размера тела запроса до 100MB
+export const maxDuration = 300; // 5 минут для больших файлов
+export const runtime = 'nodejs';
+
+const MAX_FILE_SIZE_MB = 100;
 const ALLOWED_MIME_TYPES = [
   'image/jpeg',
   'image/png',
