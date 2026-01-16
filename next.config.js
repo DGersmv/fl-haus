@@ -13,10 +13,16 @@ const nextConfig = {
   
   // Отключаем генерацию source maps в production для ускорения
   productionBrowserSourceMaps: false,
-
+  
+  // Standalone output - быстрее и стабильнее
+  output: 'standalone',
+  
+  // Отключаем оптимизацию изображений во время сборки (ускоряет сборку)
   images: {
     domains: ['tile.openstreetmap.org'],
+    unoptimized: false,
   },
+
 
   webpack: (config, { isServer }) => {
     // Настройка для pdfjs-dist

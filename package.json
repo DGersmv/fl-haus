@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "NODE_OPTIONS='--max-old-space-size=2048' next build",
-    "build:fast": "NODE_OPTIONS='--max-old-space-size=2048' next build --no-lint",
+    "build:fast": "NODE_OPTIONS='--max-old-space-size=2048' SKIP_ENV_VALIDATION=true next build",
+    "build:minimal": "NODE_OPTIONS='--max-old-space-size=2048' SKIP_ENV_VALIDATION=true next build --no-lint --experimental-build-mode=compile",
     "start": "next start -H 127.0.0.1 -p 3000",
     "export": "next export",
     "postinstall": "prisma generate",
