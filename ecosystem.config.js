@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'tashi-ani',
+    name: 'country-house',
     script: 'npm',
     args: 'start',
     cwd: process.cwd(),
