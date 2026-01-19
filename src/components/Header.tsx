@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -76,7 +76,7 @@ export default function Header({ isLoggedIn, isAdmin, onAuthUpdate }: HeaderProp
       >
         <Image
           src="/logo.jpg"
-          alt="TASHI ANI STUDIO"
+          alt="Country House"
           width={logoSize * 0.9}
           height={logoSize * 0.9}
           style={{
