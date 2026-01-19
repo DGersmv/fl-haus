@@ -6,8 +6,7 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   
-  // Оптимизации для ускорения сборки
-  swcMinify: true,
+  // Оптимизации для production
   compress: true,
   poweredByHeader: false,
   
@@ -16,9 +15,6 @@ const nextConfig = {
   
   // Standalone output - быстрее и стабильнее
   output: 'standalone',
-  
-  // Отключаем оптимизацию шрифтов (может вызывать зависания)
-  optimizeFonts: false,
   
   // Упрощаем оптимизацию изображений
   images: {

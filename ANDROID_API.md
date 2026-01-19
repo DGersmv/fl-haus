@@ -2,15 +2,14 @@
 
 ## Базовый URL API
 
-- **Production:** `https://tashi-ani.ru`
-- **IP:** `89.104.67.209`
+- **Production:** `https://country-house.227.info`
 - Все API endpoints начинаются с `/api/`
 
 ## Deep Links
 
 ### Для админа (загрузка фото)
 
-**Схема:** `tashi-ani://upload`
+**Схема:** `chonline://upload`
 
 **Параметры:**
 - `userId` (required, number) - ID заказчика
@@ -18,7 +17,7 @@
 
 **Пример:**
 ```
-tashi-ani://upload?userId=3&objectId=1
+chonline://upload?userId=3&objectId=1
 ```
 
 **Описание:**
@@ -26,7 +25,7 @@ tashi-ani://upload?userId=3&objectId=1
 
 ### Для заказчика (просмотр фото)
 
-**Схема:** `tashi-ani://view`
+**Схема:** `chonline://view`
 
 **Параметры:**
 - `email` (required, string) - Email заказчика
@@ -34,7 +33,7 @@ tashi-ani://upload?userId=3&objectId=1
 
 **Пример:**
 ```
-tashi-ani://view?email=user%40example.com&objectId=1
+chonline://view?email=user%40example.com&objectId=1
 ```
 
 **Описание:**
@@ -44,7 +43,7 @@ tashi-ani://view?email=user%40example.com&objectId=1
 
 ### Для админа
 
-**Endpoint для входа:** `POST https://tashi-ani.ru/api/auth/login`
+**Endpoint для входа:** `POST https://country-house.227.info/api/auth/login`
 
 **Headers:**
 ```
@@ -85,7 +84,7 @@ Content-Type: application/json
 
 ### Для заказчика
 
-**Endpoint для входа:** `POST https://tashi-ani.ru/api/auth/login`
+**Endpoint для входа:** `POST https://country-house.227.info/api/auth/login`
 
 **Headers:**
 ```
@@ -130,7 +129,7 @@ Content-Type: application/json
 
 ### Админ: Получение списка заказчиков
 
-**Endpoint:** `GET https://tashi-ani.ru/api/admin/users`
+**Endpoint:** `GET https://country-house.227.info/api/admin/users`
 
 **Headers:**
 ```
@@ -178,7 +177,7 @@ Authorization: Bearer {adminToken}
 
 ### Админ: Получение информации о заказчике
 
-**Endpoint:** `GET https://tashi-ani.ru/api/admin/users/{userId}`
+**Endpoint:** `GET https://country-house.227.info/api/admin/users/{userId}`
 
 **Headers:**
 ```
@@ -232,7 +231,7 @@ Authorization: Bearer {adminToken}
 
 ### Админ: Получение информации об объекте
 
-**Endpoint:** `GET https://tashi-ani.ru/api/admin/objects/{objectId}?userId={userId}`
+**Endpoint:** `GET https://country-house.227.info/api/admin/objects/{objectId}?userId={userId}`
 
 **Headers:**
 ```
@@ -292,7 +291,7 @@ Authorization: Bearer {adminToken}
 
 ### Админ: Загрузка фото
 
-**Endpoint:** `POST https://tashi-ani.ru/api/admin/objects/{objectId}/photos`
+**Endpoint:** `POST https://country-house.227.info/api/admin/objects/{objectId}/photos`
 
 **Headers:**
 ```
@@ -336,7 +335,7 @@ Authorization: Bearer {adminToken}
 
 ### Админ: Загрузка панорамы
 
-**Endpoint:** `POST https://tashi-ani.ru/api/admin/objects/{objectId}/panoramas`
+**Endpoint:** `POST https://country-house.227.info/api/admin/objects/{objectId}/panoramas`
 
 **Headers:**
 ```
@@ -378,7 +377,7 @@ Authorization: Bearer {adminToken}
 
 ### Админ: Обновление видимости панорамы
 
-**Endpoint:** `PUT https://tashi-ani.ru/api/admin/objects/{objectId}/panoramas`
+**Endpoint:** `PUT https://country-house.227.info/api/admin/objects/{objectId}/panoramas`
 
 **Headers:**
 ```
@@ -414,7 +413,7 @@ Content-Type: application/json
 
 ### Админ: Удаление панорамы
 
-**Endpoint:** `DELETE https://tashi-ani.ru/api/admin/objects/{objectId}/panoramas`
+**Endpoint:** `DELETE https://country-house.227.info/api/admin/objects/{objectId}/panoramas`
 
 **Headers:**
 ```
@@ -447,7 +446,7 @@ Content-Type: application/json
 
 ### Админ: Получение комментариев панорамы
 
-**Endpoint:** `GET https://tashi-ani.ru/api/panorama-comments?panoramaId={panoramaId}`
+**Endpoint:** `GET https://country-house.227.info/api/panorama-comments?panoramaId={panoramaId}`
 
 **Query параметры:**
 - `panoramaId` (required) — ID панорамы
@@ -489,7 +488,7 @@ Content-Type: application/json
 
 ### Админ: Добавление комментария к панораме
 
-**Endpoint:** `POST https://tashi-ani.ru/api/panorama-comments`
+**Endpoint:** `POST https://country-house.227.info/api/panorama-comments`
 
 **Headers:**
 ```
@@ -542,7 +541,7 @@ Content-Type: application/json
 
 ### Админ: Пометка комментариев панорамы прочитанными
 
-**Endpoint:** `PATCH https://tashi-ani.ru/api/panorama-comments/mark-read?email={email}&isAdmin=true&panoramaId={panoramaId}`
+**Endpoint:** `PATCH https://country-house.227.info/api/panorama-comments/mark-read?email={email}&isAdmin=true&panoramaId={panoramaId}`
 
 **Query параметры:**
 - `email` (required) — Email заказчика, от имени которого ведётся переписка
@@ -567,7 +566,7 @@ Content-Type: application/json
 
 ### Заказчик: Получение списка объектов
 
-**Endpoint:** `GET https://tashi-ani.ru/api/user/objects?email={email}`
+**Endpoint:** `GET https://country-house.227.info/api/user/objects?email={email}`
 
 **Query параметры:**
 - `email` (required) - Email заказчика
@@ -639,7 +638,7 @@ Content-Type: application/json
 
 ### Заказчик: Получение информации об объекте
 
-**Endpoint:** `GET https://tashi-ani.ru/api/user/objects/{objectId}?email={email}`
+**Endpoint:** `GET https://country-house.227.info/api/user/objects/{objectId}?email={email}`
 
 **Query параметры:**
 - `email` (required) - Email заказчика
@@ -709,7 +708,7 @@ Content-Type: application/json
 
 ### Заказчик: Получение списка папок объекта
 
-**Endpoint:** `GET https://tashi-ani.ru/api/user/objects/{objectId}/folders?email={email}`
+**Endpoint:** `GET https://country-house.227.info/api/user/objects/{objectId}/folders?email={email}`
 
 **Query параметры:**
 - `email` (required) - Email заказчика
@@ -759,7 +758,7 @@ Content-Type: application/json
 
 ### Заказчик: Получение списка фото объекта
 
-**Endpoint:** `GET https://tashi-ani.ru/api/user/objects/{objectId}/photos?email={email}&folderId={folderId}`
+**Endpoint:** `GET https://country-house.227.info/api/user/objects/{objectId}/photos?email={email}&folderId={folderId}`
 
 **Query параметры:**
 - `email` (required) - Email заказчика
@@ -815,7 +814,7 @@ Content-Type: application/json
 
 ### Заказчик: Получение файла фото
 
-**Endpoint:** `GET https://tashi-ani.ru/api/uploads/objects/{objectId}/{filename}?email={email}`
+**Endpoint:** `GET https://country-house.227.info/api/uploads/objects/{objectId}/{filename}?email={email}`
 
 **Query параметры:**
 - `email` (required) - Email заказчика
@@ -833,7 +832,7 @@ Content-Type: application/json
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/admin/users"
+val url = "https://country-house.227.info/api/admin/users"
 val request = Request.Builder()
     .url(url)
     .addHeader("Authorization", "Bearer $adminToken")
@@ -862,7 +861,7 @@ if (jsonResponse.getBoolean("success")) {
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/admin/users/$userId"
+val url = "https://country-house.227.info/api/admin/users/$userId"
 val request = Request.Builder()
     .url(url)
     .addHeader("Authorization", "Bearer $adminToken")
@@ -885,7 +884,7 @@ if (jsonResponse.getBoolean("success")) {
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/auth/login"
+val url = "https://country-house.227.info/api/auth/login"
 val json = JSONObject().apply {
     put("email", "2277277@bk.ru")
     put("password", "admin123")
@@ -917,7 +916,7 @@ if (jsonResponse.getBoolean("success")) {
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/admin/objects/$objectId/photos"
+val url = "https://country-house.227.info/api/admin/objects/$objectId/photos"
 val request = MultipartBody.Builder()
     .setType(MultipartBody.FORM)
     .addFormDataPart("file", "photo.jpg", 
@@ -938,7 +937,7 @@ val response = client.newCall(httpRequest).execute()
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/admin/objects/$objectId/panoramas"
+val url = "https://country-house.227.info/api/admin/objects/$objectId/panoramas"
 val request = MultipartBody.Builder()
     .setType(MultipartBody.FORM)
     .addFormDataPart(
@@ -962,7 +961,7 @@ val response = client.newCall(httpRequest).execute()
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/auth/login"
+val url = "https://country-house.227.info/api/auth/login"
 val json = JSONObject().apply {
     put("email", "customer@example.com")
     put("password", "password")
@@ -994,7 +993,7 @@ if (jsonResponse.getBoolean("success")) {
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/user/objects?email=${URLEncoder.encode(email, "UTF-8")}"
+val url = "https://country-house.227.info/api/user/objects?email=${URLEncoder.encode(email, "UTF-8")}"
 val request = Request.Builder()
     .url(url)
     .get()
@@ -1014,7 +1013,7 @@ if (jsonResponse.getBoolean("success")) {
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/user/objects/$objectId/folders?email=${URLEncoder.encode(email, "UTF-8")}"
+val url = "https://country-house.227.info/api/user/objects/$objectId/folders?email=${URLEncoder.encode(email, "UTF-8")}"
 val request = Request.Builder()
     .url(url)
     .get()
@@ -1035,7 +1034,7 @@ if (jsonResponse.getBoolean("success")) {
 
 ```kotlin
 // Пример на Kotlin - получить все фото
-val url = "https://tashi-ani.ru/api/user/objects/$objectId/photos?email=${URLEncoder.encode(email, "UTF-8")}"
+val url = "https://country-house.227.info/api/user/objects/$objectId/photos?email=${URLEncoder.encode(email, "UTF-8")}"
 val request = Request.Builder()
     .url(url)
     .get()
@@ -1052,7 +1051,7 @@ if (jsonResponse.getBoolean("success")) {
 
 // Пример - получить фото только из конкретной папки
 val folderId = 1
-val urlWithFolder = "https://tashi-ani.ru/api/user/objects/$objectId/photos?email=${URLEncoder.encode(email, "UTF-8")}&folderId=$folderId"
+val urlWithFolder = "https://country-house.227.info/api/user/objects/$objectId/photos?email=${URLEncoder.encode(email, "UTF-8")}&folderId=$folderId"
 val request2 = Request.Builder()
     .url(urlWithFolder)
     .get()
@@ -1064,7 +1063,7 @@ val request2 = Request.Builder()
 
 ```kotlin
 // Пример на Kotlin
-val url = "https://tashi-ani.ru/api/uploads/objects/$objectId/$filename?email=${URLEncoder.encode(email, "UTF-8")}"
+val url = "https://country-house.227.info/api/uploads/objects/$objectId/$filename?email=${URLEncoder.encode(email, "UTF-8")}"
 val request = Request.Builder()
     .url(url)
     .get()
