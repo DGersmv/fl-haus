@@ -13,9 +13,6 @@ const nextConfig = {
   // Отключаем генерацию source maps в production для ускорения
   productionBrowserSourceMaps: false,
   
-  // Standalone output - быстрее и стабильнее
-  output: 'standalone',
-  
   // Упрощаем оптимизацию изображений
   images: {
     domains: ['tile.openstreetmap.org'],
