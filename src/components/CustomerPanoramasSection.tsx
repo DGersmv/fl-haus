@@ -165,21 +165,27 @@ export default function CustomerPanoramasSection({
 
     try {
       const requestUrl = `/api/uploads/objects/${objectId}/panoramas/${panorama.filename}?email=${encodeURIComponent(userEmail)}`;
-      const response = await fetch(requestUrl, {
+      const staticUrl = `/uploads/objects/${objectId}/panoramas/${panorama.filename}`;
+      let response = await fetch(requestUrl, {
         method: "GET",
         cache: "no-store",
       });
 
       if (!response.ok) {
-        console.warn(`Панорама ${panorama.filename} недоступна (status ${response.status}).`);
-        const fallbackMessage = response.status === 404
-          ? "Файл панорамы не найден или доступ ограничен."
-          : `Не удалось загрузить панораму (статус ${response.status}).`;
-        setPanoramaFetchErrors((prev) => ({
-          ...prev,
-          [panorama.id]: fallbackMessage,
-        }));
-        return;
+        // Fallback to static path when API access fails (e.g. large files or auth edge cases)
+        const fallbackResponse = await fetch(staticUrl, { method: "GET", cache: "no-store" });
+        if (!fallbackResponse.ok) {
+          console.warn(`Панорама ${panorama.filename} недоступна (status ${response.status}).`);
+          const fallbackMessage = response.status === 404
+            ? "Файл панорамы не найден или доступ ограничен."
+            : `Не удалось загрузить панораму (статус ${response.status}).`;
+          setPanoramaFetchErrors((prev) => ({
+            ...prev,
+            [panorama.id]: fallbackMessage,
+          }));
+          return;
+        }
+        response = fallbackResponse;
       }
 
       const blob = await response.blob();
@@ -614,7 +620,7 @@ export default function CustomerPanoramasSection({
     if (selectedPanorama.url && selectedPanorama.url.trim().length > 0) {
       return selectedPanorama.url;
     }
-    return `/api/uploads/objects/${objectId}/panoramas/${selectedPanorama.filename}?email=${encodeURIComponent(userEmail)}`;
+    return `/uploads/objects/${objectId}/panoramas/${selectedPanorama.filename}`;
   }, [selectedPanorama, panoramaOriginalUrls, objectId, userEmail]);
 
   const selectedPanoramaPanoData = React.useMemo(() => {
