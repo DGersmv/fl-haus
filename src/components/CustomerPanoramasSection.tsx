@@ -611,17 +611,13 @@ export default function CustomerPanoramasSection({
     }
   };
 
+  // IMPORTANT: For customers, use ONLY blob URL!
+  // Direct paths like /uploads/... and panorama.url require API authorization
   const selectedPanoramaSrc = React.useMemo(() => {
     if (!selectedPanorama) return null;
-    const blobUrl = panoramaOriginalUrls[selectedPanorama.filename];
-    if (blobUrl) {
-      return blobUrl;
-    }
-    if (selectedPanorama.url && selectedPanorama.url.trim().length > 0) {
-      return selectedPanorama.url;
-    }
-    return `/uploads/objects/${objectId}/panoramas/${selectedPanorama.filename}`;
-  }, [selectedPanorama, panoramaOriginalUrls, objectId, userEmail]);
+    // Return only blob URL - it's created after authorized API fetch
+    return panoramaOriginalUrls[selectedPanorama.filename] || null;
+  }, [selectedPanorama, panoramaOriginalUrls]);
 
   const selectedPanoramaPanoData = React.useMemo(() => {
     if (!selectedPanorama) {
@@ -631,7 +627,8 @@ export default function CustomerPanoramasSection({
   }, [selectedPanorama]);
 
   const selectedPanoramaError = selectedPanorama ? panoramaFetchErrors[selectedPanorama.id] : undefined;
-  const selectedPanoramaIsReady = Boolean(selectedPanoramaSrc);
+  // Viewer is ready ONLY when blob URL exists (starts with blob:)
+  const selectedPanoramaIsReady = Boolean(selectedPanoramaSrc) && selectedPanoramaSrc.startsWith('blob:');
 
   const annotationsEnabled = !selectedPanoramaPanoData;
   const coordinatesRequired = annotationsEnabled;
@@ -650,15 +647,11 @@ export default function CustomerPanoramasSection({
     setSelectedPanoramaCommentId(null);
   }, [selectedPanoramaPanoData]);
 
-  // Генерируем уникальный ключ для viewer на основе панорамы и panoData
-  // чтобы он пересоздавался при изменении настроек проекции
+  // Simple key based only on panorama ID - no panoData dependency to avoid reload loops
   const viewerKey = React.useMemo(() => {
     if (!selectedPanorama) return 'none';
-    const panoDataHash = selectedPanoramaPanoData 
-      ? `-${selectedPanoramaPanoData.fullWidth || 0}-${selectedPanoramaPanoData.fullHeight || 0}`
-      : '';
-    return `${selectedPanorama.id}${panoDataHash}`;
-  }, [selectedPanorama?.id, selectedPanoramaPanoData]);
+    return `panorama-${selectedPanorama.id}`;
+  }, [selectedPanorama?.id]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
