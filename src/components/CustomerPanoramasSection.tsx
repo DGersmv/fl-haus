@@ -650,30 +650,15 @@ export default function CustomerPanoramasSection({
     setSelectedPanoramaCommentId(null);
   }, [selectedPanoramaPanoData]);
 
-  React.useEffect(() => {
-    const viewer = panoramaViewerRef.current;
-    if (!viewer || typeof viewer.setPanorama !== "function") {
-      return;
-    }
-    if (!selectedPanorama || !selectedPanoramaSrc || !selectedPanoramaPanoData) {
-      return;
-    }
-
-    let disposed = false;
-    const maybePromise = viewer.setPanorama(selectedPanoramaSrc, { panoData: selectedPanoramaPanoData });
-
-    if (maybePromise && typeof (maybePromise as Promise<unknown>).catch === "function") {
-      (maybePromise as Promise<unknown>).catch((error: unknown) => {
-        if (!disposed) {
-          console.error("Не удалось применить параметры панорамы:", error);
-        }
-      });
-    }
-
-    return () => {
-      disposed = true;
-    };
-  }, [selectedPanorama, selectedPanoramaSrc, selectedPanoramaPanoData]);
+  // Генерируем уникальный ключ для viewer на основе панорамы и panoData
+  // чтобы он пересоздавался при изменении настроек проекции
+  const viewerKey = React.useMemo(() => {
+    if (!selectedPanorama) return 'none';
+    const panoDataHash = selectedPanoramaPanoData 
+      ? `-${selectedPanoramaPanoData.fullWidth || 0}-${selectedPanoramaPanoData.fullHeight || 0}`
+      : '';
+    return `${selectedPanorama.id}${panoDataHash}`;
+  }, [selectedPanorama?.id, selectedPanoramaPanoData]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -990,9 +975,9 @@ export default function CustomerPanoramasSection({
               >
                 {selectedPanoramaIsReady ? (
                 <ReactPhotoSphereViewer
-                  key={selectedPanorama.id}
+                  key={viewerKey}
                   ref={panoramaViewerRef}
-                    src={selectedPanoramaSrc!}
+                  src={selectedPanoramaSrc!}
                   height="100%"
                   width="100%"
                   littlePlanet={false}
@@ -1001,6 +986,8 @@ export default function CustomerPanoramasSection({
                   lang={{ loading: "" }}
                   onReady={handlePanoramaReady}
                   onClick={handlePanoramaClick}
+                  loadingTxt=""
+                  {...(selectedPanoramaPanoData ? { panoData: selectedPanoramaPanoData } : {})}
                 />
                 ) : (
                   <div
