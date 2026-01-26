@@ -20,7 +20,13 @@ const nextConfig = {
     minimumCacheTTL: 60,
   },
   
-
+  // Turbopack config for Next.js 16 builds
+  turbopack: {
+    resolveAlias: {
+      'pdfjs-dist/build/pdf.worker.entry': 'pdfjs-dist/build/pdf.worker.mjs',
+      three: path.resolve(__dirname, 'node_modules/three'),
+    },
+  },
 
   webpack: (config, { isServer }) => {
     // Настройка для pdfjs-dist
