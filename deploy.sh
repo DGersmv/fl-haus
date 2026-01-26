@@ -29,6 +29,31 @@ ensure_cmd() {
   fi
 }
 
+ensure_aws_cli() {
+  if command -v aws >/dev/null 2>&1; then
+    return 0
+  fi
+
+  echo "Installing AWS CLI..."
+  if ! apt-get install -y awscli >/dev/null 2>&1; then
+    echo "awscli not available via apt, trying snap..."
+    if ! command -v snap >/dev/null 2>&1; then
+      apt_install snapd
+    fi
+    snap install aws-cli --classic >/dev/null 2>&1 || true
+  fi
+
+  if ! command -v aws >/dev/null 2>&1; then
+    echo "Trying pip install for AWS CLI..."
+    apt_install python3 python3-pip
+    pip3 install --upgrade awscli >/dev/null 2>&1 || true
+  fi
+
+  if ! command -v aws >/dev/null 2>&1; then
+    echo "WARN: AWS CLI not installed. S3 backup/restore will be skipped."
+  fi
+}
+
 install_node() {
   if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
     echo "Installing Node.js ${NODE_MAJOR}..."
@@ -94,6 +119,10 @@ install_and_build() {
 
 restore_db_if_needed() {
   cd "${APP_DIR}"
+  if ! command -v aws >/dev/null 2>&1; then
+    echo "AWS CLI not installed. Skipping S3 restore."
+    return 0
+  fi
   echo ""
   echo "S3 restore (optional):"
   bash scripts/restore-from-s3.sh || true
@@ -120,9 +149,9 @@ main() {
   require_root
   ensure_cmd git git
   ensure_cmd sqlite3 sqlite3
-  ensure_cmd aws awscli
   install_node
   install_pm2
+  ensure_aws_cli
   clone_or_update_repo
   setup_npmrc
   setup_env
