@@ -13,6 +13,8 @@ LOCAL_BACKUP_DIR="/var/backups/country-house"
 S3_ENDPOINT="https://s3.regru.cloud"
 S3_BUCKET="copybases"
 S3_PREFIX="copybases/"
+S3_INSECURE="${S3_INSECURE:-false}"
+S3_CA_BUNDLE="${S3_CA_BUNDLE:-}"
 
 # Загружаем переменные окружения для S3 ключей
 if [ -f "/var/www/country-house/.env.local" ]; then
@@ -22,9 +24,14 @@ fi
 # === ФУНКЦИИ ===
 list_backups() {
     echo "=== Доступные бэкапы в S3 ==="
-    aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}" \
-        --endpoint-url "${S3_ENDPOINT}" \
-        --region ru-1 | sort -r | head -20
+    AWS_ARGS=(--endpoint-url "${S3_ENDPOINT}" --region ru-1)
+    if [ "${S3_INSECURE}" = "true" ]; then
+        AWS_ARGS+=(--no-verify-ssl)
+    fi
+    if [ -n "${S3_CA_BUNDLE}" ]; then
+        AWS_ARGS+=(--ca-bundle "${S3_CA_BUNDLE}")
+    fi
+    aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}" "${AWS_ARGS[@]}" | sort -r | head -20
     echo ""
     echo "Для восстановления укажите имя файла:"
     echo "  $0 db-20251219_120000.sqlite"
@@ -40,9 +47,14 @@ restore_backup() {
     # Скачиваем бэкап
     TEMP_FILE="/tmp/${BACKUP_NAME}"
     echo "Скачиваю из S3..."
-    aws s3 cp "s3://${S3_BUCKET}/${S3_PREFIX}${BACKUP_NAME}" "${TEMP_FILE}" \
-        --endpoint-url "${S3_ENDPOINT}" \
-        --region ru-1
+    AWS_ARGS=(--endpoint-url "${S3_ENDPOINT}" --region ru-1)
+    if [ "${S3_INSECURE}" = "true" ]; then
+        AWS_ARGS+=(--no-verify-ssl)
+    fi
+    if [ -n "${S3_CA_BUNDLE}" ]; then
+        AWS_ARGS+=(--ca-bundle "${S3_CA_BUNDLE}")
+    fi
+    aws s3 cp "s3://${S3_BUCKET}/${S3_PREFIX}${BACKUP_NAME}" "${TEMP_FILE}" "${AWS_ARGS[@]}"
     
     if [ ! -f "${TEMP_FILE}" ]; then
         echo "ОШИБКА: Не удалось скачать бэкап!"

@@ -16,6 +16,8 @@ LOCAL_BACKUP="${LOCAL_BACKUP_DIR}/${BACKUP_FILE}"
 S3_ENDPOINT="https://s3.regru.cloud"
 S3_BUCKET="copybases"
 S3_PREFIX="copybases/"  # Папка в бакете
+S3_INSECURE="${S3_INSECURE:-false}"
+S3_CA_BUNDLE="${S3_CA_BUNDLE:-}"
 
 # Загружаем переменные окружения для S3 ключей
 if [ -f "/var/www/country-house/.env.local" ]; then
@@ -74,24 +76,32 @@ if [ "${S3_ENABLED}" = true ]; then
     fi
     
     # Загружаем в S3
-    aws s3 cp "${LOCAL_BACKUP}" "s3://${S3_BUCKET}/${S3_PREFIX}${BACKUP_FILE}" \
-        --endpoint-url "${S3_ENDPOINT}" \
-        --region ru-1
+    AWS_ARGS=(--endpoint-url "${S3_ENDPOINT}" --region ru-1)
+    if [ "${S3_INSECURE}" = "true" ]; then
+        AWS_ARGS+=(--no-verify-ssl)
+    fi
+    if [ -n "${S3_CA_BUNDLE}" ]; then
+        AWS_ARGS+=(--ca-bundle "${S3_CA_BUNDLE}")
+    fi
+    aws s3 cp "${LOCAL_BACKUP}" "s3://${S3_BUCKET}/${S3_PREFIX}${BACKUP_FILE}" "${AWS_ARGS[@]}"
     
     if [ $? -eq 0 ]; then
         echo "✓ Успешно загружено в S3!"
         
         # Удаляем старые бэкапы в S3 (оставляем последние 30)
         echo "Проверяю старые бэкапы в S3..."
-        aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}" \
-            --endpoint-url "${S3_ENDPOINT}" \
-            --region ru-1 | sort -r | tail -n +31 | while read -r line; do
+        AWS_ARGS=(--endpoint-url "${S3_ENDPOINT}" --region ru-1)
+        if [ "${S3_INSECURE}" = "true" ]; then
+            AWS_ARGS+=(--no-verify-ssl)
+        fi
+        if [ -n "${S3_CA_BUNDLE}" ]; then
+            AWS_ARGS+=(--ca-bundle "${S3_CA_BUNDLE}")
+        fi
+        aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}" "${AWS_ARGS[@]}" | sort -r | tail -n +31 | while read -r line; do
             file=$(echo "$line" | awk '{print $4}')
             if [ -n "$file" ]; then
                 echo "Удаляю старый бэкап: $file"
-                aws s3 rm "s3://${S3_BUCKET}/${S3_PREFIX}${file}" \
-                    --endpoint-url "${S3_ENDPOINT}" \
-                    --region ru-1
+                aws s3 rm "s3://${S3_BUCKET}/${S3_PREFIX}${file}" "${AWS_ARGS[@]}"
             fi
         done
     else
