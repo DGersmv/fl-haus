@@ -1,7 +1,7 @@
 # Country House
 
 Minimal deployment instructions and S3 backup/restore.
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for the full steps.
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the full steps and deploy.sh.
 
 ## Quick deploy
 

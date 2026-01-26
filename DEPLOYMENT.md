@@ -11,6 +11,17 @@ This guide covers the minimal steps to deploy the site and manage S3 backups.
 
 ## 1) Deploy
 
+### Option A: Single deploy script (recommended)
+
+```bash
+git clone https://github.com/DGersmv/country-house.git /var/www/country-house
+cd /var/www/country-house
+chmod +x deploy.sh
+sudo ./deploy.sh
+```
+
+### Option B: Manual steps
+
 ```bash
 git clone https://github.com/DGersmv/country-house.git /var/www/country-house
 cd /var/www/country-house
