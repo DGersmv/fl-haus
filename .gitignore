@@ -64,7 +64,6 @@ prisma/dev.db-journal
 /logs/
 *.log
 monitor-*.sh
-!scripts/monitor-cpu.sh
 
 # temporary install files
 .npm-cache/

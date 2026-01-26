@@ -7,9 +7,7 @@
     "build": "NODE_OPTIONS='--max-old-space-size=2048' next build",
     "start": "next start -H 127.0.0.1 -p 3001",
     "postinstall": "prisma generate",
-    "db:migrate": "prisma migrate deploy",
-    "security:check": "bash scripts/security-check.sh",
-    "security:monitor": "bash scripts/monitor-cpu.sh"
+    "db:migrate": "prisma migrate deploy"
   },
   "dependencies": {
     "@openglobus/og": "^0.26.6",
