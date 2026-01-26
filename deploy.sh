@@ -7,6 +7,7 @@ BRANCH="master"
 NODE_MAJOR="20"
 SWAP_FILE="/swapfile"
 SWAP_SIZE_GB="4"
+REQUIRED_NODE_VERSION="20.9.0"
 
 require_root() {
   if [ "$(id -u)" -ne 0 ]; then
@@ -57,11 +58,30 @@ ensure_aws_cli() {
 }
 
 install_node() {
-  if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
+  version_ge() {
+    [ "$(printf '%s\n' "$1" "$2" | sort -V | head -n1)" = "$2" ]
+  }
+
+  if command -v node >/dev/null 2>&1; then
+    CURRENT_NODE_VERSION=$(node -v | sed 's/^v//')
+    if version_ge "${CURRENT_NODE_VERSION}" "${REQUIRED_NODE_VERSION}"; then
+      return 0
+    fi
+    echo "Upgrading Node.js to ${NODE_MAJOR} (current: ${CURRENT_NODE_VERSION})..."
+  else
     echo "Installing Node.js ${NODE_MAJOR}..."
-    ensure_cmd curl curl
-    curl -fsSL "https://deb.nodesource.com/setup_${NODE_MAJOR}.x" | bash -
-    apt_install nodejs
+  fi
+
+  ensure_cmd curl curl
+  curl -fsSL "https://deb.nodesource.com/setup_${NODE_MAJOR}.x" | bash -
+  apt_install nodejs
+
+  if command -v node >/dev/null 2>&1; then
+    CURRENT_NODE_VERSION=$(node -v | sed 's/^v//')
+    if ! version_ge "${CURRENT_NODE_VERSION}" "${REQUIRED_NODE_VERSION}"; then
+      echo "ERROR: Node.js ${REQUIRED_NODE_VERSION}+ required. Current: ${CURRENT_NODE_VERSION}"
+      exit 1
+    fi
   fi
 }
 

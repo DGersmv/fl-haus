@@ -4,7 +4,7 @@ This guide covers the minimal steps to deploy the site and manage S3 backups.
 
 ## Prerequisites
 
-- Node.js 20+
+- Node.js 20.9+
 - PM2
 - Git
 - Ubuntu 20.04+
