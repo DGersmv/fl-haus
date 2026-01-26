@@ -4,7 +4,7 @@ set -euo pipefail
 APP_DIR="/var/www/country-house"
 REPO_URL="https://github.com/DGersmv/country-house.git"
 BRANCH="master"
-NODE_MAJOR="18"
+NODE_MAJOR="20"
 
 require_root() {
   if [ "$(id -u)" -ne 0 ]; then
