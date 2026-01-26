@@ -24,7 +24,6 @@ const nextConfig = {
   turbopack: {
     resolveAlias: {
       'pdfjs-dist/build/pdf.worker.entry': 'pdfjs-dist/build/pdf.worker.mjs',
-      three: path.resolve(__dirname, 'node_modules/three'),
     },
   },
 
