@@ -5,18 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "NODE_OPTIONS='--max-old-space-size=2048' next build",
-    "build:fast": "NODE_OPTIONS='--max-old-space-size=2048' SKIP_ENV_VALIDATION=true NEXT_TELEMETRY_DISABLED=1 next build",
-    "build:minimal": "NODE_OPTIONS='--max-old-space-size=2048' SKIP_ENV_VALIDATION=true NEXT_TELEMETRY_DISABLED=1 next build --no-lint",
-    "start": "next start -H 127.0.0.1 -p 3000",
-    "export": "next export",
+    "start": "next start -H 127.0.0.1 -p 3001",
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate deploy",
-    "db:seed": "node prisma/seed.js",
-    "pm2:start": "pm2 start ecosystem.config.js",
-    "pm2:stop": "pm2 stop country-house",
-    "pm2:restart": "pm2 restart country-house",
-    "pm2:logs": "pm2 logs country-house",
-    "deploy": "npm install && npm run build && pm2 restart ecosystem.config.js --env production"
+    "security:check": "bash scripts/security-check.sh",
+    "security:monitor": "bash scripts/monitor-cpu.sh"
   },
   "dependencies": {
     "@openglobus/og": "^0.26.6",
@@ -32,12 +25,12 @@
     "framer-motion": "^12.23.12",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.525.0",
-    "next": "^15.4.4",
+    "next": "^16.0.7",
     "nodemailer": "^7.0.9",
     "pdfjs-dist": "^5.4.296",
     "prisma": "^6.17.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
     "react-photo-sphere-viewer": "^6.2.3",
     "react-swipeable": "^7.0.2",
     "sharp": "^0.33.5",
@@ -54,7 +47,7 @@
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.181.0",
     "eslint": "^9.0.0",
-    "eslint-config-next": "^15.4.4",
+    "eslint-config-next": "^16.0.7",
     "postcss": "^8.5.6",
     "typescript": "^5.5.4"
   }

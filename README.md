@@ -1,3 +1,38 @@
+# Country House
+
+> IMPORTANT: This project was updated after a security incident (CVE-2025-55182).
+>
+> Before deployment, read:
+> - [Secure deployment guide](../tashi-ani/COUNTRY_HOUSE_SECURITY_DEPLOY.md)
+> - [Security checklist](../tashi-ani/COUNTRY_HOUSE_CHECKLIST.md)
+> - [Emergency fix for CVE-2025-55182](../tashi-ani/CVE-2025-55182_URGENT_FIX.md)
+
+## Secure deployment
+
+CRITICAL: Always use a .npmrc with ignore-scripts=true.
+
+```bash
+# Install dependencies without running scripts
+npm install --ignore-scripts
+
+# Manually run only the safe script
+npx prisma generate
+
+# Build
+npm run build
+```
+
+## CVE-2025-55182 (React4Shell)
+
+This project was updated to mitigate a critical vulnerability:
+- React 19.0.1+ (19.0.0 was vulnerable)
+- Next.js 16.0.7+
+- .npmrc with ignore-scripts=true
+- CPU monitoring
+- Mining pool port checks
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

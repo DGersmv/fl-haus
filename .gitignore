@@ -35,6 +35,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.local.example
 
 # vercel
 .vercel
@@ -48,3 +49,23 @@ next-env.d.ts
 # Prisma local database
 prisma/dev.db
 prisma/dev.db-journal
+
+# security
+.npmrc
+.env.local
+.env*.local
+
+# suspicious binaries
+*.x86_64
+*.node.unsigned
+*.exe
+
+# monitoring logs
+/logs/
+*.log
+monitor-*.sh
+!scripts/monitor-cpu.sh
+
+# temporary install files
+.npm-cache/
+node_modules/.cache/
