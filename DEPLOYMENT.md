@@ -70,6 +70,12 @@ cd /var/www/country-house
 bash scripts/backup-to-s3.sh
 ```
 
+By default, backups are never deleted. To enable pruning:
+
+```bash
+S3_PRUNE=true LOCAL_PRUNE=true bash scripts/backup-to-s3.sh
+```
+
 ## Required environment variables
 
 Add these to `.env.local`:

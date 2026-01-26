@@ -18,6 +18,8 @@ S3_BUCKET="copybases"
 S3_PREFIX="${S3_PREFIX:-copybases/}"  # Папка в бакете
 S3_INSECURE="${S3_INSECURE:-false}"
 S3_CA_BUNDLE="${S3_CA_BUNDLE:-}"
+S3_PRUNE="${S3_PRUNE:-false}"
+LOCAL_PRUNE="${LOCAL_PRUNE:-false}"
 
 # Загружаем переменные окружения для S3 ключей
 if [ -f "/var/www/country-house/.env.local" ]; then
@@ -87,23 +89,26 @@ if [ "${S3_ENABLED}" = true ]; then
     
     if [ $? -eq 0 ]; then
         echo "✓ Успешно загружено в S3!"
-        
-        # Удаляем старые бэкапы в S3 (оставляем последние 30)
-        echo "Проверяю старые бэкапы в S3..."
-        AWS_ARGS=(--endpoint-url "${S3_ENDPOINT}" --region ru-1)
-        if [ "${S3_INSECURE}" = "true" ]; then
-            AWS_ARGS+=(--no-verify-ssl)
-        fi
-        if [ -n "${S3_CA_BUNDLE}" ]; then
-            AWS_ARGS+=(--ca-bundle "${S3_CA_BUNDLE}")
-        fi
-        aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}" "${AWS_ARGS[@]}" | sort -r | tail -n +31 | while read -r line; do
-            file=$(echo "$line" | awk '{print $4}')
-            if [ -n "$file" ]; then
-                echo "Удаляю старый бэкап: $file"
-                aws s3 rm "s3://${S3_BUCKET}/${S3_PREFIX}${file}" "${AWS_ARGS[@]}"
+
+        if [ "${S3_PRUNE}" = "true" ]; then
+            echo "Проверяю старые бэкапы в S3..."
+            AWS_ARGS=(--endpoint-url "${S3_ENDPOINT}" --region ru-1)
+            if [ "${S3_INSECURE}" = "true" ]; then
+                AWS_ARGS+=(--no-verify-ssl)
             fi
-        done
+            if [ -n "${S3_CA_BUNDLE}" ]; then
+                AWS_ARGS+=(--ca-bundle "${S3_CA_BUNDLE}")
+            fi
+            aws s3 ls "s3://${S3_BUCKET}/${S3_PREFIX}" "${AWS_ARGS[@]}" | sort -r | tail -n +31 | while read -r line; do
+                file=$(echo "$line" | awk '{print $4}')
+                if [ -n "$file" ]; then
+                    echo "Удаляю старый бэкап: $file"
+                    aws s3 rm "s3://${S3_BUCKET}/${S3_PREFIX}${file}" "${AWS_ARGS[@]}"
+                fi
+            done
+        else
+            echo "Пропускаю удаление старых бэкапов в S3 (S3_PRUNE=false)."
+        fi
     else
         echo "ОШИБКА: Не удалось загрузить в S3!"
     fi
@@ -112,8 +117,12 @@ else
 fi
 
 # === ОЧИСТКА ЛОКАЛЬНЫХ БЭКАПОВ ===
-echo "Удаляю локальные бэкапы старше 7 дней..."
-find "${LOCAL_BACKUP_DIR}" -name "db-*.sqlite" -mtime +7 -delete
+if [ "${LOCAL_PRUNE}" = "true" ]; then
+    echo "Удаляю локальные бэкапы старше 7 дней..."
+    find "${LOCAL_BACKUP_DIR}" -name "db-*.sqlite" -mtime +7 -delete
+else
+    echo "Пропускаю удаление локальных бэкапов (LOCAL_PRUNE=false)."
+fi
 
 # === ЛОГИРОВАНИЕ ===
 LOG_FILE="${LOCAL_BACKUP_DIR}/backup.log"
