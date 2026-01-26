@@ -5,6 +5,8 @@ APP_DIR="/var/www/country-house"
 REPO_URL="https://github.com/DGersmv/country-house.git"
 BRANCH="master"
 NODE_MAJOR="20"
+SWAP_FILE="/swapfile"
+SWAP_SIZE_GB="4"
 
 require_root() {
   if [ "$(id -u)" -ne 0 ]; then
@@ -67,6 +69,32 @@ install_pm2() {
   if ! command -v pm2 >/dev/null 2>&1; then
     echo "Installing PM2..."
     npm install -g pm2
+  fi
+}
+
+ensure_swap() {
+  if swapon --show | grep -q "${SWAP_FILE}"; then
+    return 0
+  fi
+
+  if [ -f "${SWAP_FILE}" ]; then
+    chmod 600 "${SWAP_FILE}" || true
+    mkswap "${SWAP_FILE}" >/dev/null 2>&1 || true
+    swapon "${SWAP_FILE}" || true
+  else
+    echo "Creating swap file (${SWAP_SIZE_GB}G)..."
+    if command -v fallocate >/dev/null 2>&1; then
+      fallocate -l "${SWAP_SIZE_GB}G" "${SWAP_FILE}"
+    else
+      dd if=/dev/zero of="${SWAP_FILE}" bs=1G count="${SWAP_SIZE_GB}"
+    fi
+    chmod 600 "${SWAP_FILE}"
+    mkswap "${SWAP_FILE}" >/dev/null 2>&1
+    swapon "${SWAP_FILE}"
+  fi
+
+  if ! grep -q "^${SWAP_FILE} " /etc/fstab; then
+    echo "${SWAP_FILE} none swap sw 0 0" >> /etc/fstab
   fi
 }
 
@@ -152,6 +180,7 @@ main() {
   install_node
   install_pm2
   ensure_aws_cli
+  ensure_swap
   clone_or_update_repo
   setup_npmrc
   setup_env

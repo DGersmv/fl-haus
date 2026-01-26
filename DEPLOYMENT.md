@@ -20,6 +20,8 @@ chmod +x deploy.sh
 sudo ./deploy.sh
 ```
 
+The script also creates a 4GB swap file at /swapfile if none exists.
+
 ### Option B: Manual steps
 
 ```bash
