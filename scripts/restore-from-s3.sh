@@ -112,8 +112,14 @@ fi
 if [ -z "$1" ]; then
     list_backups
 else
-    read -p "Вы уверены, что хотите восстановить базу из $1? (yes/no): " confirm
-    if [ "$confirm" = "yes" ]; then
+    if [ "${RESTORE_YES:-false}" = "true" ]; then
+        confirm="yes"
+    else
+        read -p "Вы уверены, что хотите восстановить базу из $1? (yes/no): " confirm
+    fi
+
+    confirm="$(printf '%s' "$confirm" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')"
+    if [ "$confirm" = "yes" ] || [ "$confirm" = "y" ] || [ "$confirm" = "da" ] || [ "$confirm" = "да" ] || [ "$confirm" = "д" ]; then
         restore_backup "$1"
     else
         echo "Отменено."
