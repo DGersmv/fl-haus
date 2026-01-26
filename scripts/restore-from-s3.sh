@@ -12,7 +12,7 @@ LOCAL_BACKUP_DIR="/var/backups/country-house"
 # S3 настройки (Reg.ru)
 S3_ENDPOINT="https://s3.regru.cloud"
 S3_BUCKET="copybases"
-S3_PREFIX="copybases/"
+S3_PREFIX="${S3_PREFIX:-copybases/}"
 S3_INSECURE="${S3_INSECURE:-false}"
 S3_CA_BUNDLE="${S3_CA_BUNDLE:-}"
 
@@ -61,6 +61,14 @@ restore_backup() {
         exit 1
     fi
     
+    # Распаковка если архив .gz
+    if [[ "${BACKUP_NAME}" == *.gz ]]; then
+        TEMP_UNPACKED="/tmp/${BACKUP_NAME%.gz}"
+        echo "Распаковываю архив..."
+        gunzip -c "${TEMP_FILE}" > "${TEMP_UNPACKED}"
+        TEMP_FILE="${TEMP_UNPACKED}"
+    fi
+
     # Проверяем целостность
     echo "Проверяю целостность базы..."
     sqlite3 "${TEMP_FILE}" "PRAGMA integrity_check;" > /dev/null

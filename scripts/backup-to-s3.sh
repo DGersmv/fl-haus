@@ -15,7 +15,7 @@ LOCAL_BACKUP="${LOCAL_BACKUP_DIR}/${BACKUP_FILE}"
 # S3 настройки (Reg.ru)
 S3_ENDPOINT="https://s3.regru.cloud"
 S3_BUCKET="copybases"
-S3_PREFIX="copybases/"  # Папка в бакете
+S3_PREFIX="${S3_PREFIX:-copybases/}"  # Папка в бакете
 S3_INSECURE="${S3_INSECURE:-false}"
 S3_CA_BUNDLE="${S3_CA_BUNDLE:-}"
 
