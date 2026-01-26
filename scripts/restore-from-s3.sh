@@ -12,7 +12,7 @@ LOCAL_BACKUP_DIR="/var/backups/country-house"
 # S3 настройки (Reg.ru)
 S3_ENDPOINT="https://s3.regru.cloud"
 S3_BUCKET="copybases"
-S3_PREFIX="${PROJECT_NAME}/"
+S3_PREFIX="copybases/"
 
 # Загружаем переменные окружения для S3 ключей
 if [ -f "/var/www/country-house/.env.local" ]; then
