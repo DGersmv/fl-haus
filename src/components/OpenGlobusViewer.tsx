@@ -17,7 +17,7 @@ const LOOK_AHEAD_M = 50_000;      // смотреть немного вперё�
 const TICK_MS = 40;               // шаг обновления анимации (мс)
 
 // ====== РЕСУРСЫ ======
-const DEFAULT_PATH = '/points/default.png';
+const DEFAULT_PATH = '/points/default.jpg';
 const OG_MARKER    = '/external/og/lib/res/marker.png';
 
 type TourPoint = { lon: number; lat: number; img?: string; name?: string };

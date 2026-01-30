@@ -47,7 +47,7 @@ export default function SiteLogo() {
     >
       <Image
         src="/logo_new.jpg"
-        alt="Country House"
+        alt="FL-Haus"
         width={logoSize}
         height={logoSize}
         style={{
