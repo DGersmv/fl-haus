@@ -6,8 +6,18 @@ set -e
 
 # === НАСТРОЙКИ ===
 PROJECT_NAME="fl-haus"
-DB_PATH="/var/www/fl-haus/prisma/production.db"
+APP_DIR="/var/www/fl-haus"
 LOCAL_BACKUP_DIR="/var/backups/fl-haus"
+
+# Путь к БД берём из .env.local (DATABASE_URL="file:./prisma/xxx.db")
+if [ -f "${APP_DIR}/.env.local" ]; then
+    DB_URL=$(grep -E '^DATABASE_URL=' "${APP_DIR}/.env.local" | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+    # Преобразуем "file:./prisma/xxx.db" в абсолютный путь
+    DB_REL_PATH=$(echo "${DB_URL}" | sed 's|^file:\.||')
+    DB_PATH="${APP_DIR}${DB_REL_PATH}"
+else
+    DB_PATH="${APP_DIR}/prisma/production.db"
+fi
 
 # S3 настройки (Reg.ru)
 S3_ENDPOINT="https://s3.regru.cloud"
@@ -17,8 +27,8 @@ S3_INSECURE="${S3_INSECURE:-false}"
 S3_CA_BUNDLE="${S3_CA_BUNDLE:-}"
 
 # Загружаем переменные окружения для S3 ключей
-if [ -f "/var/www/fl-haus/.env.local" ]; then
-    export $(grep -E '^(AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY)' /var/www/fl-haus/.env.local | xargs)
+if [ -f "${APP_DIR}/.env.local" ]; then
+    export $(grep -E '^(AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY)' "${APP_DIR}/.env.local" | xargs)
 fi
 
 # === ФУНКЦИИ ===
