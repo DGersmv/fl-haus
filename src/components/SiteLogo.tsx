@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -46,7 +46,7 @@ export default function SiteLogo() {
       }}
     >
       <Image
-        src="/logo_new.png"
+        src="/logo_new.jpg"
         alt="Country House"
         width={logoSize}
         height={logoSize}
