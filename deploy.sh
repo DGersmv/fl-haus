@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-APP_DIR="/var/www/country-house"
-REPO_URL="https://github.com/DGersmv/country-house.git"
+APP_DIR="/var/www/fl-haus"
+REPO_URL="https://github.com/DGersmv/fl-haus.git"
 BRANCH="master"
 NODE_MAJOR="20"
 SWAP_FILE="/swapfile"
@@ -184,8 +184,8 @@ restore_db_if_needed() {
 
 start_app() {
   cd "${APP_DIR}"
-  if pm2 describe country-house >/dev/null 2>&1; then
-    pm2 restart country-house
+  if pm2 describe fl-haus >/dev/null 2>&1; then
+    pm2 restart fl-haus
   else
     pm2 start ecosystem.config.js
   fi

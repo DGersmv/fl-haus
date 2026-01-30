@@ -1,9 +1,9 @@
 module.exports = {
   apps: [{
-    name: 'country-house',
+    name: 'fl-haus',
     script: 'npm',
     args: 'start',
-    cwd: '/var/www/country-house',
+    cwd: '/var/www/fl-haus',
     instances: 1,
     autorestart: true,
     watch: false,
