@@ -1,22 +1,46 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type Props = {
+  videoSrc?: string;
+  // Для fallback на слайдшоу, если видео нет
   intervalMs?: number;
   fadeMs?: number;
   kenBurns?: boolean;
 };
 
 export default function BackgroundSlideshow({
+  videoSrc = "/bg/fl_31.mp4",
   intervalMs = 7000,
   fadeMs = 1200,
   kenBurns = true,
 }: Props) {
+  const [useVideo, setUseVideo] = useState(true);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // 1) тянем список из API (как было)
+  // Проверяем, доступно ли видео
   useEffect(() => {
+    const checkVideo = async () => {
+      try {
+        const res = await fetch(videoSrc, { method: "HEAD" });
+        if (res.ok) {
+          setUseVideo(true);
+        } else {
+          setUseVideo(false);
+        }
+      } catch {
+        setUseVideo(false);
+      }
+    };
+    checkVideo();
+  }, [videoSrc]);
+
+  // Fallback: тянем список картинок из API
+  useEffect(() => {
+    if (useVideo && videoLoaded) return;
     let mounted = true;
     (async () => {
       try {
@@ -30,37 +54,29 @@ export default function BackgroundSlideshow({
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [useVideo, videoLoaded]);
 
-  // 2) цикл по кругу (как было)
+  // Цикл слайдшоу (fallback)
   useEffect(() => {
+    if (useVideo && videoLoaded) return;
     if (images.length < 2) return;
     const id = setInterval(
       () => setIndex((i) => (i + 1) % images.length),
       intervalMs
     );
     return () => clearInterval(id);
-  }, [images, intervalMs]);
+  }, [images, intervalMs, useVideo, videoLoaded]);
 
-  // 3) предзагрузка следующего кадра (как было)
+  // Предзагрузка следующего кадра (fallback)
   useEffect(() => {
+    if (useVideo && videoLoaded) return;
     if (!images.length) return;
     const next = images[(index + 1) % images.length];
     const img = new Image();
     img.decoding = "async";
     img.loading = "eager";
     img.src = next;
-  }, [index, images]);
-
-  // 4) плейсхолдер
-  if (images.length === 0) {
-    return (
-      <div
-        aria-hidden
-        style={{ position: "fixed", inset: 0, zIndex: -1, background: "#000" }}
-      />
-    );
-  }
+  }, [index, images, useVideo, videoLoaded]);
 
   const active = images[index];
 
@@ -77,7 +93,31 @@ export default function BackgroundSlideshow({
         pointerEvents: "none",
       }}
     >
-      {images.map((src) => {
+      {/* Видео фон */}
+      {useVideo && (
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          autoPlay
+          loop
+          muted
+          playsInline
+          onLoadedData={() => setVideoLoaded(true)}
+          onError={() => setUseVideo(false)}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: videoLoaded ? 1 : 0,
+            transition: "opacity 0.8s ease-in-out",
+          }}
+        />
+      )}
+
+      {/* Fallback слайдшоу (показываем пока видео не загрузилось или если его нет) */}
+      {(!useVideo || !videoLoaded) && images.length > 0 && images.map((src) => {
         const isActive = src === active;
         return (
           <img
@@ -94,7 +134,6 @@ export default function BackgroundSlideshow({
               height: "100%",
               objectFit: "cover",
               opacity: isActive ? 1 : 0,
-              // Ken Burns только на активном кадре (transform → композитинг на GPU)
               transform: isActive && kenBurns ? "scale(1.04)" : "scale(1)",
               transformOrigin: "center center",
               transitionProperty: "opacity, transform",
@@ -104,14 +143,12 @@ export default function BackgroundSlideshow({
               )}ms`,
               transitionTimingFunction: "ease-in-out, ease-in-out",
               willChange: "opacity, transform",
-              // ВАЖНО: не используем filter на самих <img> — это вызывает тяжёлые репейнты
-              // filter: "contrast(1.02) saturate(1.02)",
             }}
           />
         );
       })}
 
-      {/* мягкое затемнение отдельным слоем (дёшево для композитора) */}
+      {/* Мягкое затемнение */}
       <div
         style={{
           position: "absolute",
