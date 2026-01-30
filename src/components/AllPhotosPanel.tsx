@@ -137,7 +137,7 @@ export default function AllPhotosPanel({ objectId, adminToken, onPhotosUpdate }:
       marginBottom: "24px"
     }}>
       <h3 style={{
-        fontFamily: "ChinaCyr, sans-serif",
+        fontFamily: "Montserrat, sans-serif",
         fontSize: "1.25rem",
         color: "white",
         margin: "0 0 16px 0"

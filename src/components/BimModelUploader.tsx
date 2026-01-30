@@ -191,7 +191,7 @@ export default function BimModelUploader({
           ×
         </button>
         <h2 style={{
-          fontFamily: "ChinaCyr, sans-serif",
+          fontFamily: "Montserrat, sans-serif",
           fontSize: "1.75rem",
           fontWeight: "bold",
           margin: "0 0 24px 0",

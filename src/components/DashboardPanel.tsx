@@ -139,7 +139,7 @@ export default function DashboardPanel({
                 fontWeight: 800, 
                 fontSize: "1.1rem", 
                 lineHeight: 1.2,
-                fontFamily: "ChinaCyr, sans-serif"
+                fontFamily: "Montserrat, sans-serif"
               }}>
                 {title}
               </h3>

@@ -1,12 +1,3 @@
-/* =================== ШРИФТЫ =================== */
-@font-face {
-  font-family: 'ChinaCyr';
-  src: url('/fonts/ChinaCyr.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* =================== БАЗОВЫЕ УСТАНОВКИ =================== */
 /* управление скроллом */
 html { scrollbar-gutter: stable both-edges; }
@@ -21,10 +12,10 @@ body {
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
-/* заголовки и меню — декоративный шрифт ChinaCyr */
+/* заголовки и меню */
 h1, h2, h3,
 .menu-strip {
-  font-family: 'ChinaCyr', Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
 /* =================== ГЛОБАЛЬНЫЕ УТИЛИТЫ =================== */
@@ -210,7 +201,7 @@ html, body { overflow-x: hidden; }
   text-decoration: none;
   letter-spacing: .03em;
   font-size: clamp(14px, 1.15vw, 18px);
-  font-family: 'ChinaCyr', var(--font-montserrat), sans-serif;
+  font-family: var(--font-montserrat), var(--font-montserrat), sans-serif;
   background: none;
   border: none;
   cursor: pointer;

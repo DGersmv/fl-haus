@@ -249,7 +249,7 @@ export default function CustomerPhotoViewer({ userEmail }: CustomerPhotoViewerPr
           <h1 style={{
             fontSize: "2.5rem",
             fontWeight: 800,
-            fontFamily: "ChinaCyr, sans-serif"
+            fontFamily: "Montserrat, sans-serif"
           }}>
             Фото объекта
           </h1>

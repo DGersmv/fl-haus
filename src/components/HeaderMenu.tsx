@@ -169,9 +169,9 @@ export default function HeaderMenu({ isLoggedIn: propIsLoggedIn, isAdmin: propIs
         overflow: "hidden",
       };
 
-  // единый шрифт для всех пунктов — ChinaCyr (fallback Montserrat)
+  // единый шрифт для всех пунктов — Montserrat (fallback Montserrat)
   const linkFont: React.CSSProperties = {
-    fontFamily: "ChinaCyr, var(--font-montserrat), sans-serif",
+    fontFamily: "Montserrat, var(--font-montserrat), sans-serif",
     whiteSpace: "nowrap",
     flexShrink: 1, // Позволяет элементам сжиматься
     minWidth: 0, // Позволяет тексту обрезаться

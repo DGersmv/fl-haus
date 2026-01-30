@@ -7,7 +7,7 @@ function SplitChinaHeadline({ text }: { text: string }) {
     <h2
       className="font-extrabold text-[clamp(1.8rem,5vw,2.8rem)] mb-6"
       style={{
-        fontFamily: "'ChinaCyr', Arial, sans-serif",
+        fontFamily: "'Montserrat', Arial, sans-serif",
         letterSpacing: "0.04em",
         background: "linear-gradient(90deg, #faecd1 0%, #d3a373 100%)",
         WebkitBackgroundClip: "text",

@@ -130,7 +130,7 @@ export default function DashboardGrid() {
             fontSize: "2.5rem",
             fontWeight: 800,
             marginBottom: "8px",
-            fontFamily: "ChinaCyr, sans-serif"
+            fontFamily: "Montserrat, sans-serif"
           }}>
             Личный кабинет
           </h1>

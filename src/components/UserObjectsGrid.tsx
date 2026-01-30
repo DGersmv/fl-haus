@@ -155,7 +155,7 @@ export default function UserObjectsGrid({ userEmail }: UserObjectsGridProps) {
             ←
           </button>
           <h2 style={{
-            fontFamily: "ChinaCyr, sans-serif",
+            fontFamily: "Montserrat, sans-serif",
             fontSize: "2rem",
             margin: 0
           }}>
@@ -213,7 +213,7 @@ export default function UserObjectsGrid({ userEmail }: UserObjectsGridProps) {
               marginBottom: "16px"
             }}>
               <h3 style={{
-                fontFamily: "ChinaCyr, sans-serif",
+                fontFamily: "Montserrat, sans-serif",
                 fontSize: "1.25rem",
                 color: "white",
                 margin: 0,
@@ -392,7 +392,7 @@ export default function UserObjectsGrid({ userEmail }: UserObjectsGridProps) {
           padding: "40px"
         }}>
           <h3 style={{
-            fontFamily: "ChinaCyr, sans-serif",
+            fontFamily: "Montserrat, sans-serif",
             fontSize: "1.5rem",
             marginBottom: "8px"
           }}>

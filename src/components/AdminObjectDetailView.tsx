@@ -1673,7 +1673,7 @@ useEffect(() => {
             ←
           </button>
           <h2 style={{
-            fontFamily: "ChinaCyr, sans-serif",
+            fontFamily: "Montserrat, sans-serif",
             fontSize: "2rem",
             margin: 0
           }}>
@@ -2514,7 +2514,7 @@ useEffect(() => {
         {activeTab === 'projects' && (
           <div>
             <h3 style={{
-              fontFamily: "ChinaCyr, sans-serif",
+              fontFamily: "Montserrat, sans-serif",
               fontSize: "1.5rem",
               color: "white",
               margin: "0 0 24px 0",
@@ -2561,7 +2561,7 @@ useEffect(() => {
               marginBottom: "24px"
             }}>
               <h3 style={{
-                fontFamily: "ChinaCyr, sans-serif",
+                fontFamily: "Montserrat, sans-serif",
                 fontSize: "1.5rem",
                 color: "white",
                 margin: "0 0 20px 0",
@@ -2793,7 +2793,7 @@ useEffect(() => {
             textAlign: "center"
           }}>
             <h3 style={{
-              fontFamily: "ChinaCyr, sans-serif",
+              fontFamily: "Montserrat, sans-serif",
               fontSize: "1.5rem",
               color: "white",
               margin: "0 0 20px 0"
@@ -3046,7 +3046,7 @@ useEffect(() => {
                   color: "white",
                   fontSize: "1.1rem",
                   margin: "0 0 10px 0",
-                  fontFamily: "ChinaCyr, sans-serif"
+                  fontFamily: "Montserrat, sans-serif"
                 }}>
                   Комментарии ({panoramaComments.length})
                 </h3>
