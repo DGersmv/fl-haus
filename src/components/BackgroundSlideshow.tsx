@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function BackgroundSlideshow({
-  videoSrc = "/bg/fl_31.mp4",
+  videoSrc = "/bg/FL_31.mp4",
   intervalMs = 7000,
   fadeMs = 1200,
   kenBurns = true,
