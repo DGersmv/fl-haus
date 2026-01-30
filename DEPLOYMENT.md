@@ -1,4 +1,4 @@
-# Deployment Guide for Country-House
+# Deployment Guide for FL-Haus
 
 This guide covers the minimal steps to deploy the site and manage S3 backups.
 
@@ -14,8 +14,8 @@ This guide covers the minimal steps to deploy the site and manage S3 backups.
 ### Option A: Single deploy script (recommended)
 
 ```bash
-git clone https://github.com/DGersmv/country-house.git /var/www/country-house
-cd /var/www/country-house
+git clone https://github.com/DGersmv/fl-haus.git /var/www/fl-haus
+cd /var/www/fl-haus
 chmod +x deploy.sh
 sudo ./deploy.sh
 ```
@@ -25,8 +25,8 @@ The script also creates a 4GB swap file at /swapfile if none exists.
 ### Option B: Manual steps
 
 ```bash
-git clone https://github.com/DGersmv/country-house.git /var/www/country-house
-cd /var/www/country-house
+git clone https://github.com/DGersmv/fl-haus.git /var/www/fl-haus
+cd /var/www/fl-haus
 
 cat > .npmrc << 'EOF'
 ignore-scripts=true
@@ -51,10 +51,10 @@ pm2 startup
 ## 2) Restore existing DB from S3
 
 The app uses SQLite at:
-`/var/www/country-house/prisma/dev.db`
+`/var/www/fl-haus/prisma/production.db`
 
 ```bash
-cd /var/www/country-house
+cd /var/www/fl-haus
 
 # List available backups
 bash scripts/restore-from-s3.sh
@@ -66,7 +66,7 @@ bash scripts/restore-from-s3.sh db-YYYYMMDD_HHMMSS.sqlite
 ## 3) Create a new backup
 
 ```bash
-cd /var/www/country-house
+cd /var/www/fl-haus
 bash scripts/backup-to-s3.sh
 ```
 

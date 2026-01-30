@@ -1,13 +1,23 @@
 #!/bin/bash
 # Скрипт восстановления базы данных из S3 (Reg.ru)
-# Проект: country-house
+# Проект: fl-haus
 
 set -e
 
 # === НАСТРОЙКИ ===
-PROJECT_NAME="country-house"
-DB_PATH="/var/www/country-house/prisma/dev.db"
-LOCAL_BACKUP_DIR="/var/backups/country-house"
+PROJECT_NAME="fl-haus"
+APP_DIR="/var/www/fl-haus"
+LOCAL_BACKUP_DIR="/var/backups/fl-haus"
+
+# Путь к БД берём из .env.local (DATABASE_URL="file:./prisma/xxx.db")
+if [ -f "${APP_DIR}/.env.local" ]; then
+    DB_URL=$(grep -E '^DATABASE_URL=' "${APP_DIR}/.env.local" | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+    # Преобразуем "file:./prisma/xxx.db" в абсолютный путь
+    DB_REL_PATH=$(echo "${DB_URL}" | sed 's|^file:\.||')
+    DB_PATH="${APP_DIR}${DB_REL_PATH}"
+else
+    DB_PATH="${APP_DIR}/prisma/production.db"
+fi
 
 # S3 настройки (Reg.ru)
 S3_ENDPOINT="https://s3.regru.cloud"
@@ -17,8 +27,8 @@ S3_INSECURE="${S3_INSECURE:-false}"
 S3_CA_BUNDLE="${S3_CA_BUNDLE:-}"
 
 # Загружаем переменные окружения для S3 ключей
-if [ -f "/var/www/country-house/.env.local" ]; then
-    export $(grep -E '^(AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY)' /var/www/country-house/.env.local | xargs)
+if [ -f "${APP_DIR}/.env.local" ]; then
+    export $(grep -E '^(AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY)' "${APP_DIR}/.env.local" | xargs)
 fi
 
 # === ФУНКЦИИ ===
@@ -82,7 +92,7 @@ restore_backup() {
     
     # Останавливаем приложение
     echo "Останавливаю приложение..."
-    pm2 stop country-house 2>/dev/null || true
+    pm2 stop fl-haus 2>/dev/null || true
     
     # Восстанавливаем
     echo "Восстанавливаю базу данных..."
@@ -90,7 +100,7 @@ restore_backup() {
     
     # Запускаем приложение
     echo "Запускаю приложение..."
-    pm2 start country-house 2>/dev/null || true
+    pm2 start fl-haus 2>/dev/null || true
     
     # Очистка
     rm -f "${TEMP_FILE}"
