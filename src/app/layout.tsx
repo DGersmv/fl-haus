@@ -1,4 +1,4 @@
-﻿import "./globals.css";
+import "./globals.css";
 import Header from "@/components/Header";
 import { Montserrat_Alternates } from "next/font/google";
 import { ViewModeProvider } from "@/components/ui/ViewMode";
@@ -13,12 +13,12 @@ const montserrat = Montserrat_Alternates({
 });
 
 export const metadata = {
-  title: "Country House",
-  description: "Construction of country houses, landscape design, projects and portfolio",
+  title: "FL-Haus",
+  description: "Строительство загородных домов, ландшафтный дизайн, проекты и портфолио",
   icons: {
-    icon: "/logo_new.png",
-    shortcut: "/logo_new.png",
-    apple: "/logo_new.png",
+    icon: "/logo_new.jpg",
+    shortcut: "/logo_new.jpg",
+    apple: "/logo_new.jpg",
   },
 };
 
