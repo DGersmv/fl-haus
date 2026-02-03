@@ -29,11 +29,16 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error("Ошибка аутентификации:", error);
-    return NextResponse.json({ 
-      success: false, 
-      message: "Ошибка аутентификации" 
-    }, { status: 500 });
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error("Ошибка аутентификации:", err.message, err.stack);
+    const isDev = process.env.NODE_ENV !== "production";
+    return NextResponse.json(
+      {
+        success: false,
+        message: isDev ? `Ошибка: ${err.message}` : "Ошибка аутентификации",
+      },
+      { status: 500 }
+    );
   }
 }
 

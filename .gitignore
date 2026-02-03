@@ -51,6 +51,7 @@ prisma/dev.db
 prisma/dev.db-journal
 prisma/production.db
 prisma/production.db-journal
+prisma/prisma/
 
 # security
 .npmrc

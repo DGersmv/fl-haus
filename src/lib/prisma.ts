@@ -1,7 +1,27 @@
-import { PrismaClient } from '@prisma/client';
+import path from 'path';
+
+// Обязательно ДО импорта PrismaClient: Prisma читает DATABASE_URL при загрузке клиента.
+// В dev (Turbopack) .env иногда не подхватывается — подставляем/нормализуем только в dev.
+// В production никогда не трогаем DATABASE_URL из .env — иначе сломаем работающий сервер.
+if (typeof process !== 'undefined') {
+  if (!process.env.DATABASE_URL) {
+    const dbPath = path.join(process.cwd(), 'prisma', 'prisma', 'production.db');
+    process.env.DATABASE_URL = 'file:' + dbPath.replace(/\\/g, '/');
+  } else if (process.env.NODE_ENV !== 'production' && process.env.DATABASE_URL.startsWith('file:')) {
+    const raw = process.env.DATABASE_URL.slice(5).replace(/\//g, path.sep).replace(/^\.\\?/, '');
+    if (!path.isAbsolute(raw)) {
+      const schemaDir = path.join(process.cwd(), 'prisma');
+      const absolute = path.resolve(schemaDir, raw);
+      process.env.DATABASE_URL = 'file:' + absolute.replace(/\\/g, '/');
+    }
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { PrismaClient } = require('@prisma/client');
 
 type GlobalPrisma = {
-  prisma: PrismaClient | undefined;
+  prisma: InstanceType<typeof PrismaClient> | undefined;
 };
 
 const globalForPrisma = globalThis as unknown as GlobalPrisma;

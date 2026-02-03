@@ -205,17 +205,17 @@ html, body { overflow-x: hidden; }
 .menu-strip {
   position: fixed;
   top: 16px;
-  right: var(--grid-gutter);
+  right: 32px;
   left: auto;
-  width: max-content;       /* по контенту: одна кнопка = 170px, как на фото */
-  min-width: 170px;
-  max-width: 400px;         /* при 2 кнопках панель расширяется */
-  height: 100px;
+  width: max-content;
+  min-width: 120px;
+  max-width: 400px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  border-radius: 8px;
+  padding: 0 12px;
+  border-radius: 12px;
   background: rgba(255,255,255,0.20);
   box-shadow: 0 4px 48px #0057;
   border: 1.5px solid rgba(90, 107, 151, 0.884);
@@ -253,27 +253,30 @@ html, body { overflow-x: hidden; }
   color: #17242f;
 }
 
-/* Кнопка «Вход»: только кнопка 170×100, скругление 8, без панели */
+/* Кнопка «Вход»: пропорции 21/9 как у панели с глобусом (112×48) */
 .btn-login {
-  width: 170px;
-  height: 100px;
-  border-radius: 8px;
+  width: 112px;
+  height: 48px;
+  padding: 0;
+  border-radius: 12px;
   border: none;
   background: #E5B84A;
   color: #0a0a0a;
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 0.875rem;
   font-family: var(--font-montserrat), Montserrat, sans-serif;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 .btn-login:hover {
   background: #d4a83e;
   color: #0a0a0a;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
 }
 
 

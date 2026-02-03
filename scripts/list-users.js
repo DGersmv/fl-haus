@@ -36,6 +36,29 @@ if (!process.env.DATABASE_URL) {
     });
   }
 }
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = 'file:./prisma/production.db';
+}
+// Prisma резолвит путь относительно папки prisma/ (где schema). file:./prisma/production.db → prisma/prisma/production.db
+const url = process.env.DATABASE_URL || '';
+const projectRoot = path.join(__dirname, '..');
+let dbFile = null;
+if (url.startsWith('file:')) {
+  const raw = url.slice(5).replace(/\//g, path.sep).replace(/^\.\\?/, '');
+  if (path.isAbsolute(raw)) {
+    dbFile = raw;
+  } else {
+    // Как Prisma: относительно prisma/ (каталог schema)
+    const schemaDir = path.join(projectRoot, 'prisma');
+    dbFile = path.resolve(schemaDir, raw);
+  }
+  process.env.DATABASE_URL = 'file:' + dbFile.replace(/\\/g, '/');
+}
+if (dbFile && !fs.existsSync(dbFile)) {
+  console.error('Файл базы не найден:', dbFile);
+  console.error('Создайте БД и примените миграции: npx prisma migrate deploy');
+  process.exit(1);
+}
 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();

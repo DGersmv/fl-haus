@@ -27,18 +27,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={montserrat.variable}>
-      <head>
-        <link rel="preload" as="image" href="/portfolio/Проектирование/01.jpg" />
-      </head>
-      <body
-        className="min-h-screen bg-black"
-        style={{
-          backgroundImage: "url('/portfolio/Проектирование/01.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
+      <body className="min-h-screen bg-black">
         <ViewModeProvider>
           <LoginOpenProvider>
             <SuppressFastRefreshLogs />

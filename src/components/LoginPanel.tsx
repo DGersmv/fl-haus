@@ -77,7 +77,11 @@ export default function LoginPanel({
           onLoginSuccess(email, isAdmin);
         }, 1500);
       } else {
-        setMessage({ type: "error", text: result.message || "Неверный email или пароль" });
+        const msg = result.message || "Неверный email или пароль";
+        setMessage({ type: "error", text: msg });
+        if (response.status === 500 && msg.startsWith("Ошибка:")) {
+          console.error("[Login API 500]", msg);
+        }
       }
     } catch (error) {
       setMessage({ type: "error", text: "Ошибка подключения. Проверьте интернет-соединение." });

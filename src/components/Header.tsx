@@ -26,10 +26,10 @@ export default function Header({ isLoggedIn, isAdmin, onAuthUpdate }: HeaderProp
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Размеры логотипа
-  const logoSize = isMobile ? 60 : isTablet ? 70 : 80;
-  const logoRadius = logoSize / 2;
-  const innerPadding = logoRadius * 0.05;
+  // Логотип и кнопка: пропорции 21/9 как у панели с глобусом
+  const height = 48;
+  const width = Math.round(height * (21 / 9)); // 112
+  const radius = 12;
 
   return (
     <header
@@ -40,53 +40,54 @@ export default function Header({ isLoggedIn, isAdmin, onAuthUpdate }: HeaderProp
         right: 0,
         zIndex: 9999,
         backgroundColor: "transparent",
-        padding: isMobile ? "8px 16px" : "16px 24px",
-        display: isMobile ? "flex" : "flex",
+        padding: isMobile ? "12px 24px" : "16px 32px",
+        display: "flex",
         flexDirection: isMobile ? "column" : "row",
-        alignItems: isMobile ? "center" : "center",
+        alignItems: "center",
         justifyContent: isMobile ? "center" : "space-between",
-        minHeight: isMobile ? "120px" : isTablet ? "90px" : "100px",
+        minHeight: isMobile ? "100px" : "72px",
         gap: isMobile ? "8px" : "0",
       }}
     >
-      {/* Логотип */}
-      <div
+      {/* Логотип: ссылка на fl-haus.ru, без окаймления */}
+      <a
+        href="https://fl-haus.ru/"
+        target="_blank"
+        rel="noopener noreferrer"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: logoSize,
-          height: logoSize,
-          borderRadius: "50%",
-          background: "rgba(206,214,177,0.18)",
-          backdropFilter: "blur(18px)",
-          border: "2px solid rgba(211,163,115,0.6)",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-          transition: "all 0.3s ease",
-          flexShrink: 0,
+          width,
+          height,
+          borderRadius: radius,
+          overflow: "hidden",
+          cursor: "pointer",
+          textDecoration: "none",
+          transition: "transform 0.2s ease, box-shadow 0.2s ease",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.55)";
-          e.currentTarget.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.22), 0 0 12px rgba(64, 130, 109, 0.4)";
+          e.currentTarget.style.transform = "scale(1.05) translateY(-2px)";
+          e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.35)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "rgba(211,163,115,0.6)";
-          e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.15)";
+          e.currentTarget.style.transform = "scale(1) translateY(0)";
+          e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
         }}
       >
         <Image
-          src="/logo_new.jpg"
-          alt="FL-Haus"
-          width={logoSize * 0.9}
-          height={logoSize * 0.9}
+          src="/logo_fl.jpg"
+          alt="FL-Haus — модульные дома"
+          width={width}
+          height={height}
           style={{
-            borderRadius: "50%",
-            padding: innerPadding,
-            transition: "transform 0.3s ease",
+            borderRadius: radius,
+            objectFit: "cover",
           }}
           priority
         />
-      </div>
+      </a>
 
       {/* Меню */}
       <div

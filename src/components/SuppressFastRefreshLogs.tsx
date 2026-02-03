@@ -11,7 +11,11 @@ export default function SuppressFastRefreshLogs() {
     if (typeof window === "undefined") return;
     const skip = (args: unknown[]) => {
       const msg = args[0];
-      return typeof msg === "string" && msg.includes("[Fast Refresh]");
+      if (typeof msg === "string") {
+        if (msg.includes("[Fast Refresh]")) return true;
+        if (msg.includes("Multiple instances of Three.js")) return true;
+      }
+      return false;
     };
     const origLog = console.log;
     const origWarn = console.warn;

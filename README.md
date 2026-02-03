@@ -3,6 +3,19 @@
 Minimal deployment instructions and S3 backup/restore.
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for the full steps and deploy.sh.
 
+## Первый вход (мастер-админ)
+
+После деплоя или первой миграции в БД нет пользователей. Создать мастер-админа и войти:
+
+```bash
+# 1. Создать пользователя с ролью MASTER (email + пароль на твой выбор)
+node scripts/create-admin.js твой@email.ru Пароль123
+
+# 2. На сайте нажать «Вход» и войти этим email и паролем
+```
+
+Список пользователей: `node scripts/list-users.js`. Сброс пароля: `node scripts/reset-password.js <email> <новый_пароль>`.
+
 ## Quick deploy
 
 ```bash
