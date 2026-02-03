@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import SuppressFastRefreshLogs from "@/components/SuppressFastRefreshLogs";
 import { Montserrat_Alternates } from "next/font/google";
 import { ViewModeProvider } from "@/components/ui/ViewMode";
+import { LoginOpenProvider } from "@/components/ui/LoginOpen";
 import ModeSync from "@/components/ui/ModeSync";
 import HtmlModeClass from "@/components/ui/HtmlModeClass";
 
@@ -39,13 +40,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }}
       >
         <ViewModeProvider>
-          <SuppressFastRefreshLogs />
-          <ModeSync />
-          <HtmlModeClass />
-          <Header />
-          <div className="main-content">
-            {children}
-          </div>
+          <LoginOpenProvider>
+            <SuppressFastRefreshLogs />
+            <ModeSync />
+            <HtmlModeClass />
+            <Header />
+            <div className="main-content">
+              {children}
+            </div>
+          </LoginOpenProvider>
         </ViewModeProvider>
       </body>
     </html>

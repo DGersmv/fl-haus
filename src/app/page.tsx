@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useViewMode } from "@/components/ui/ViewMode";
+import { useLoginOpen } from "@/components/ui/LoginOpen";
 import BackgroundSlideshow from "@/components/BackgroundSlideshow";
 import DashboardGrid from "@/components/DashboardGrid";
 import AdminDashboard from "@/components/AdminDashboard";
@@ -16,6 +17,7 @@ import GlassMapPanel from "@/components/GlassMapPanel";
 
 export default function Home() {
   const { mode, setMode } = useViewMode();
+  const { isLoginOpen } = useLoginOpen();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -104,10 +106,26 @@ export default function Home() {
           >
             <section className="page-wrap home-intro-wrap">
               <div className="home-intro-layout">
-                <div className="home-intro-map">
+                <motion.div
+                  className="home-intro-map"
+                  initial={{ x: 0, opacity: 1 }}
+                  animate={{
+                    x: isLoginOpen ? "100vw" : 0,
+                    opacity: isLoginOpen ? 0 : 1,
+                  }}
+                  transition={{ duration: 0.75, ease: [0.4, 0, 0.2, 1] }}
+                >
                   <GlassMapPanel />
-                </div>
-                <div className="home-intro-text">
+                </motion.div>
+                <motion.div
+                  className="home-intro-text"
+                  initial={{ x: 0, opacity: 1 }}
+                  animate={{
+                    x: isLoginOpen ? "-100vw" : 0,
+                    opacity: isLoginOpen ? 0 : 1,
+                  }}
+                  transition={{ duration: 0.75, ease: [0.4, 0, 0.2, 1] }}
+                >
                   <h2>Кабинет заказчика</h2>
                   <p>
                     В кабинете заказчика можно смотреть объекты и фото, получать файлы
@@ -116,7 +134,7 @@ export default function Home() {
                   <p>
                     Для входа нажмите кнопку «Вход» в верхнем меню.
                   </p>
-                </div>
+                </motion.div>
               </div>
             </section>
             <style jsx>{`

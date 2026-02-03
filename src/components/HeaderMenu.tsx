@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useViewMode } from "@/components/ui/ViewMode";
+import { useLoginOpen } from "@/components/ui/LoginOpen";
 import LoginPanel from "@/components/LoginPanel";
 
 interface HeaderMenuProps {
@@ -12,7 +13,7 @@ interface HeaderMenuProps {
 export default function HeaderMenu({ isLoggedIn: propIsLoggedIn, isAdmin: propIsAdmin, onAuthUpdate }: HeaderMenuProps = {}) {
   const [open, setOpen] = useState(false);
   const [isWide, setIsWide] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const { isLoginOpen, setLoginOpen } = useLoginOpen();
   const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn || false);
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -157,13 +158,13 @@ export default function HeaderMenu({ isLoggedIn: propIsLoggedIn, isAdmin: propIs
         <button
           type="button"
           className="btn-login"
-          onClick={() => setIsLoginOpen(true)}
+          onClick={() => setLoginOpen(true)}
         >
           Вход
         </button>
         <LoginPanel
           isOpen={isLoginOpen}
-          onClose={() => setIsLoginOpen(false)}
+          onClose={() => setLoginOpen(false)}
           onLoginSuccess={handleLoginSuccess}
         />
       </>

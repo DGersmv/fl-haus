@@ -101,7 +101,7 @@ export default function LoginPanel({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.5 }}
           style={{
             position: "fixed",
             top: 0,
@@ -128,22 +128,21 @@ export default function LoginPanel({
             }}
           />
 
-          {/* Панель входа */}
+          {/* Панель входа: выезжает снизу */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ 
-              type: "spring", 
-              stiffness: 300, 
-              damping: 30,
-              duration: 0.4 
+            initial={{ opacity: 0, y: "100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "100%" }}
+            transition={{
+              type: "tween",
+              duration: 0.65,
+              ease: [0.4, 0, 0.2, 1],
             }}
             style={{
               position: "relative",
               width: "100%",
               maxWidth: "400px",
-              margin: "0 16px"
+              margin: "0 16px",
             }}
           >
             <div
