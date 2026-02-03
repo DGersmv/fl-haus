@@ -1,9 +1,10 @@
 import "./globals.css";
 import Header from "@/components/Header";
+import SuppressFastRefreshLogs from "@/components/SuppressFastRefreshLogs";
 import { Montserrat_Alternates } from "next/font/google";
 import { ViewModeProvider } from "@/components/ui/ViewMode";
-import ModeSync from "@/components/ui/ModeSync";           // <- sync mode by URL
-import HtmlModeClass from "@/components/ui/HtmlModeClass"; // <- class on <html> for global styles
+import ModeSync from "@/components/ui/ModeSync";
+import HtmlModeClass from "@/components/ui/HtmlModeClass";
 
 const montserrat = Montserrat_Alternates({
   subsets: ["latin", "cyrillic"],
@@ -26,18 +27,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={montserrat.variable}>
       <head>
-        <link rel="preload" as="image" href="/portfolio/01.jpg" />
+        <link rel="preload" as="image" href="/portfolio/Проектирование/01.jpg" />
       </head>
       <body
         className="min-h-screen bg-black"
         style={{
-          backgroundImage: "url('/portfolio/01.jpg')",
+          backgroundImage: "url('/portfolio/Проектирование/01.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       >
         <ViewModeProvider>
+          <SuppressFastRefreshLogs />
           <ModeSync />
           <HtmlModeClass />
           <Header />

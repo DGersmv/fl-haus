@@ -141,35 +141,6 @@ export default function HeaderMenu({ isLoggedIn: propIsLoggedIn, isAdmin: propIs
     zIndex: 200,
   };
 
-  // ↑↑ ничего кроме размеров panel не трогаем
-  const panel: React.CSSProperties = isWide
-    ? {
-        // расширили панель на десктопе
-        width: "min(58vw, calc(100vw - 64px))",
-        maxWidth: "980px",
-        minWidth: "320px",
-        marginLeft: "auto",
-        borderRadius: 9999,
-        backdropFilter: "blur(18px)",
-        background: "linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.12))",
-        border: "2px solid rgba(211, 163, 115, 0.6)",
-        boxShadow: "0 8px 24px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.22)",
-        padding: "12px 22px", // немного больше внутренний отступ
-        overflow: "hidden",
-      }
-    : {
-        width: "96vw",
-        margin: "10px auto 0",
-        borderRadius: 16, // Меньше радиус для мобильных
-        backdropFilter: "blur(18px)",
-        background: "linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.12))",
-        border: "2px solid rgba(90, 107, 151, 0.6)",
-        boxShadow: "0 8px 24px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.22)",
-        padding: "8px 12px", // Меньше padding для мобильных
-        overflow: "hidden",
-      };
-
-  // единый шрифт для всех пунктов — Montserrat (fallback Montserrat)
   const linkFont: React.CSSProperties = {
     fontFamily: "Montserrat, var(--font-montserrat), sans-serif",
     whiteSpace: "nowrap",
@@ -179,6 +150,53 @@ export default function HeaderMenu({ isLoggedIn: propIsLoggedIn, isAdmin: propIs
 
   const displayName = userName || userEmail || (isAdmin ? "Админ" : "Пользователь");
 
+  // Не авторизован: только кнопка «Вход» 170×100, без панели
+  if (!isLoggedIn) {
+    return (
+      <>
+        <button
+          type="button"
+          className="btn-login"
+          onClick={() => setIsLoginOpen(true)}
+        >
+          Вход
+        </button>
+        <LoginPanel
+          isOpen={isLoginOpen}
+          onClose={() => setIsLoginOpen(false)}
+          onLoginSuccess={handleLoginSuccess}
+        />
+      </>
+    );
+  }
+
+  // Авторизован: панель с именем и «Выйти»
+  const panel: React.CSSProperties = isWide
+    ? {
+        width: "fit-content",
+        minWidth: 170,
+        maxWidth: 400,
+        marginLeft: "auto",
+        backdropFilter: "blur(18px)",
+        background: "linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.12))",
+        border: "2px solid rgba(211, 163, 115, 0.6)",
+        boxShadow: "0 8px 24px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.22)",
+        padding: "8px 16px",
+        borderRadius: 8,
+        overflow: "hidden",
+      }
+    : {
+        width: "96vw",
+        margin: "10px auto 0",
+        borderRadius: 16,
+        backdropFilter: "blur(18px)",
+        background: "linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.12))",
+        border: "2px solid rgba(90, 107, 151, 0.6)",
+        boxShadow: "0 8px 24px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.22)",
+        padding: "8px 12px",
+        overflow: "hidden",
+      };
+
   return (
     <div style={bar}>
       <nav className={`menu-strip${open ? " open" : ""}`} style={panel}>
@@ -187,60 +205,33 @@ export default function HeaderMenu({ isLoggedIn: propIsLoggedIn, isAdmin: propIs
           style={{
             display: "flex",
             alignItems: "center",
-            width: "100%",
             gap: isWide ? 14 : 6,
             flexWrap: isWide ? "nowrap" : "wrap",
             justifyContent: "center",
-            overflow: "hidden",
             minWidth: 0,
           }}
         >
-
-          {!isLoggedIn ? (
-            <button
-              type="button"
-              className="menu-link"
-              onClick={() => setIsLoginOpen(true)}
-              style={linkFont}
-            >
-              Вход
-            </button>
-          ) : (
-            <>
-              <button
-                type="button"
-                className={`menu-link ${mode === "admin-dashboard" || mode === "objects" ? 'active' : ''}`}
-                onClick={() => setMode(isAdmin ? "admin-dashboard" : "objects")}
-                style={{
-                  ...linkFont,
-                  color: mode === "admin-dashboard" || mode === "objects" ? "rgba(211, 163, 115, 1)" : "rgba(211, 163, 115, 0.9)",
-                }}
-              >
-                {displayName}
-              </button>
-              <button
-                type="button"
-                className="menu-link"
-                onClick={handleLogout}
-                style={{
-                  ...linkFont,
-                  color: "rgba(239, 68, 68, 0.9)"
-                }}
-              >
-                Выйти
-              </button>
-            </>
-          )}
+          <button
+            type="button"
+            className={`menu-link ${mode === "admin-dashboard" || mode === "objects" ? "active" : ""}`}
+            onClick={() => setMode(isAdmin ? "admin-dashboard" : "objects")}
+            style={{
+              ...linkFont,
+              color: mode === "admin-dashboard" || mode === "objects" ? "rgba(211, 163, 115, 1)" : "rgba(211, 163, 115, 0.9)",
+            }}
+          >
+            {displayName}
+          </button>
+          <button
+            type="button"
+            className="menu-link"
+            onClick={handleLogout}
+            style={{ ...linkFont, color: "rgba(239, 68, 68, 0.9)" }}
+          >
+            Выйти
+          </button>
         </div>
       </nav>
-
-      {/* Панель входа */}
-      <LoginPanel 
-        isOpen={isLoginOpen} 
-        onClose={() => setIsLoginOpen(false)}
-        onLoginSuccess={handleLoginSuccess}
-      />
-
     </div>
   );
 }

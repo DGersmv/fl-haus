@@ -87,6 +87,13 @@ export default function OpenGlobusViewer({ ready = true }: { ready?: boolean }) 
         return;
       }
 
+      // Ждём готовности контейнера и первого кадра, чтобы renderer был инициализирован
+      // до загрузки тайлов (иначе createTextureDefault падает с null)
+      await new Promise<void>((r) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => r()));
+      });
+      if (destroyed) return;
+
       const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
 
       // Слои

@@ -6,7 +6,7 @@ import { useViewMode } from "@/components/ui/ViewMode";
 
 export default function GlassMapPanel() {
   const { setMode } = useViewMode();
-  const pad = 5;
+  const pad = 8; /* 1×8pt по сетке */
 
   return (
     <div className="mapWrapper">
@@ -30,7 +30,7 @@ export default function GlassMapPanel() {
           className="group cursor-default gpu"      // ← композитный слой для hover
           
           // ВАЖНО: filter убрали (дорогие репейнты). Оставляем только transform/opacity.
-          whileHover={{ y: -6, scale: 1.015 }}
+          whileHover={{ y: -8, scale: 1.015 }}
           transition={{ type: "spring", stiffness: 220, damping: 20 }}
           style={{
             position: "absolute",
@@ -39,7 +39,7 @@ export default function GlassMapPanel() {
             overflow: "hidden",
             background: "rgba(255,255,255,0.15)",
             backdropFilter: "blur(32px)",            // статичный blur ок; не анимируем
-            border: "2.5px solid rgba(211, 163, 115, 0.6)",
+            border: "2px solid rgba(211, 163, 115, 0.6)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -69,20 +69,16 @@ export default function GlassMapPanel() {
       <style jsx>{`
         .mapWrapper {
           width: 96vw;
+          max-width: 960px;
           aspect-ratio: 21 / 12;
           border-radius: 1.7rem;
           margin: 0 auto;
         }
         @media (min-width: 1024px) {
           .mapWrapper {
-            position: fixed;             /* фиксируем */
-            top: var(--hero-top);        /* тот же уровень, что и текст */
-            right: 3%;                   /* прижимаем вправо */
-            width: 30vw;
+            width: 60vw;
+            max-width: 900px;
             aspect-ratio: 21 / 9;
-            border-radius: 2.2rem;
-            margin: 0;                   /* убираем auto-margin */
-            z-index: 120;                /* поверх фона, но ниже меню */
           }
         }
       `}</style>

@@ -102,8 +102,11 @@ export default function Home() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35 }}
           >
-            <section className="page-wrap">
+            <section className="page-wrap home-intro-wrap">
               <div className="home-intro-layout">
+                <div className="home-intro-map">
+                  <GlassMapPanel />
+                </div>
                 <div className="home-intro-text">
                   <h2>Кабинет заказчика</h2>
                   <p>
@@ -114,46 +117,40 @@ export default function Home() {
                     Для входа нажмите кнопку «Вход» в верхнем меню.
                   </p>
                 </div>
-                <div className="home-intro-map">
-                  <GlassMapPanel />
-                </div>
               </div>
             </section>
             <style jsx>{`
               .home-intro-layout {
-                display: grid;
-                gap: 18px;
-                align-items: start;
+                display: flex;
+                flex-direction: column;
+                gap: var(--grid-gutter, 30px);
+                align-items: center;
+              }
+
+              .home-intro-map {
+                width: 100%;
+                display: flex;
+                justify-content: center;
               }
 
               .home-intro-text {
                 max-width: 720px;
                 color: #f6f8fa;
+                text-align: center;
               }
 
               .home-intro-text h2 {
-                margin: 0 0 12px;
+                margin: 0 0 16px;
               }
 
               .home-intro-text p {
-                margin: 0 0 12px;
+                margin: 0 0 16px;
                 opacity: 0.9;
               }
 
               .home-intro-text p:last-child {
                 margin-bottom: 0;
                 opacity: 0.75;
-              }
-
-              .home-intro-map {
-                width: 100%;
-              }
-
-              @media (min-width: 1024px) {
-                .home-intro-layout {
-                  grid-template-columns: minmax(0, 1fr) minmax(0, 30vw);
-                  gap: 24px;
-                }
               }
             `}</style>
           </motion.div>
