@@ -1,0 +1,11 @@
+{
+  "name": "Country House (fl-haus)",
+  "install": "bash scripts/setup-cloud-agent.sh",
+  "terminals": [
+    {
+      "name": "next-dev",
+      "command": "npm run dev"
+    }
+  ],
+  "ports": [3000]
+}
